@@ -1,5 +1,6 @@
 import { isLoggedIn, login } from '../shared/util/auth';
 import { router } from '../shared/util/Router';
+import { withErrorHandling } from '../shared/util/withErrorHandling';
 
 const ID = {
   LOGIN_FORM: 'login-form',
@@ -12,6 +13,12 @@ export default class LoginPage {
   constructor(selector: string) {
     this.$root = this.getRootElement(selector);
     if (this.$root) this.render();
+
+    return withErrorHandling(this);
+  }
+
+  로그인_페이지에서_에러_던지기() {
+    throw new Error('로그인 페이지에서 던진 에러');
   }
 
   private getRootElement(selector: string): Element | null {
@@ -43,6 +50,8 @@ export default class LoginPage {
   }
 
   private bindLoginEvent() {
+    console.log(this); // LoginPage {$root: div#root}
+
     const $loginForm = this.getElement<HTMLFormElement>(`#${ID.LOGIN_FORM}`);
     if (!$loginForm) return;
 
